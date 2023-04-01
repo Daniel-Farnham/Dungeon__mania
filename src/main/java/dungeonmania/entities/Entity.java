@@ -1,5 +1,6 @@
 package dungeonmania.entities;
 
+// import dungeonmania.Game;
 import dungeonmania.map.GameMap;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
@@ -46,12 +47,17 @@ public abstract class Entity {
         this.position = Position.translateBy(this.position, offset);
     }
 
+    public void onOverlap(GameMap map, Entity entity) {
 
-    public abstract void onOverlap(GameMap map, Entity entity);
+    }
 
-    public abstract void onMovedAway(GameMap map, Entity entity);
+    public void onMovedAway(GameMap map, Entity entity) {
 
-    public abstract void onDestroy(GameMap gameMap);
+    }
+
+    public void onDestroy(GameMap gameMap) {
+
+    }
 
     public Position getPosition() {
         return position;
