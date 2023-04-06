@@ -35,11 +35,11 @@ public abstract class Enemy extends Entity implements Battleable {
         }
     }
 
-    @Override
-    public void onDestroy(GameMap map) {
-        Game g = map.getGame();
-        g.unsubscribe(getId());
-    }
+    // @Override
+    // public void onDestroy(GameMap map) {
+    //     Game g = map.getGame();
+    //     g.unsubscribe(getId());
+    // }
 
     public abstract void move(Game game);
 }

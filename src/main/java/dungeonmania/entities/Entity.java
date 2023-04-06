@@ -1,6 +1,6 @@
 package dungeonmania.entities;
 
-// import dungeonmania.Game;
+import dungeonmania.Game;
 import dungeonmania.map.GameMap;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
@@ -56,7 +56,8 @@ public abstract class Entity {
     }
 
     public void onDestroy(GameMap gameMap) {
-
+        Game g = gameMap.getGame();
+        g.unsubscribe(getId());
     }
 
     public Position getPosition() {
