@@ -9,7 +9,6 @@ import dungeonmania.entities.Player;
 import dungeonmania.util.Position;
 
 public class ExitGoal implements Goal {
-    
     @Override
     public boolean achieved(Game game) {
         Player character = game.getPlayer();
