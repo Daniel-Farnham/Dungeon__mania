@@ -1,6 +1,7 @@
 package dungeonmania.entities;
 
 import dungeonmania.Game;
+import dungeonmania.entities.buildables.BuildableFactory;
 import dungeonmania.entities.buildables.Bow;
 import dungeonmania.entities.buildables.Shield;
 import dungeonmania.entities.collectables.*;
@@ -15,15 +16,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
+import java.util.Map;
+import java.util.HashMap;
 
 import org.json.JSONObject;
 
 public class EntityFactory {
     private JSONObject config;
     private Random ranGen = new Random();
+    private BuildableFactory buildableFactory;
 
     public EntityFactory(JSONObject config) {
         this.config = config;
+        this.buildableFactory = new BuildableFactory();
     }
 
     public Entity createEntity(JSONObject jsonEntity) {
@@ -113,13 +118,18 @@ public class EntityFactory {
 
     public Bow buildBow() {
         int bowDurability = config.optInt("bow_durability");
-        return new Bow(bowDurability);
+        Map<String, Object> properties = new HashMap<>();
+        properties.put("durability", bowDurability);
+        return (Bow) buildableFactory.createBuildable("Bow", null, properties);
     }
 
     public Shield buildShield() {
         int shieldDurability = config.optInt("shield_durability");
         double shieldDefence = config.optInt("shield_defence");
-        return new Shield(shieldDurability, shieldDefence);
+        Map<String, Object> properties = new HashMap<>();
+        properties.put("durability", shieldDurability);
+        properties.put("defence", shieldDefence);
+        return (Shield) buildableFactory.createBuildable("Shield", null, properties);
     }
 
     private Entity constructEntity(JSONObject jsonEntity, JSONObject config) {
