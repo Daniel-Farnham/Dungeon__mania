@@ -4,6 +4,7 @@ import dungeonmania.map.GameMap;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
+
 import java.util.UUID;
 
 public abstract class Entity {
@@ -47,7 +48,11 @@ public abstract class Entity {
     }
 
 
-    public abstract void onOverlap(GameMap map, Entity entity);
+    public void onOverlap(GameMap map, Entity entity) {
+        if (entity instanceof Player) {
+            ((Player) entity).interactWithCollectable(map, this);
+        }
+    }
 
     public abstract void onMovedAway(GameMap map, Entity entity);
 
