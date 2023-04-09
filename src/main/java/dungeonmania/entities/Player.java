@@ -199,5 +199,4 @@ public class Player extends Entity implements Battleable {
             ((Collectable) collectable).onPlayerCollect(map, this);
         }
     }
-    
 }
