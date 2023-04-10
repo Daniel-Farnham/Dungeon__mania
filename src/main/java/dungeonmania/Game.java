@@ -37,6 +37,7 @@ public class Game {
     private int tickCount = 0;
     private PriorityQueue<ComparableCallback> sub = new PriorityQueue<>();
     private PriorityQueue<ComparableCallback> addingSub = new PriorityQueue<>();
+    private int killScore = 0;
 
     public Game(String dungeonName) {
         this.name = dungeonName;
@@ -82,6 +83,7 @@ public class Game {
         }
         if (enemy.getEnemyHealth() <= 0) {
             map.destroyEntity(enemy);
+            killScore++;
         }
     }
 
@@ -202,5 +204,13 @@ public class Game {
 
     public BattleFacade getBattleFacade() {
         return battleFacade;
+    }
+
+    public int getKillScore() {
+        return this.killScore;
+    }
+
+    public void setKillScore(int kills) {
+        this.killScore = kills;
     }
 }

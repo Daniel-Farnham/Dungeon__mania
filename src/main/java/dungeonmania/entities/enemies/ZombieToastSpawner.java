@@ -18,12 +18,6 @@ public class ZombieToastSpawner extends Entity implements Interactable {
         game.getEntityFactory().spawnZombie(game, this);
     }
 
-    // @Override
-    // public void onDestroy(GameMap map) {
-    //     Game g = map.getGame();
-    //     g.unsubscribe(getId());
-    // }
-
     @Override
     public void interact(Player player, Game game) {
         player.getInventory().getWeapon().use(game);
@@ -33,4 +27,5 @@ public class ZombieToastSpawner extends Entity implements Interactable {
     public boolean isInteractable(Player player) {
         return Position.isAdjacent(player.getPosition(), getPosition()) && player.hasWeapon();
     }
+
 }
