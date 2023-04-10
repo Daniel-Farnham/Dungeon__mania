@@ -48,3 +48,5 @@ public abstract class Buildable extends Entity implements InventoryItem, BattleI
         this.durability = durability;
     }
 }
+
+

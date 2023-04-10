@@ -5,11 +5,12 @@ import dungeonmania.battles.BattleStatistics;
 import dungeonmania.entities.BattleItem;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.Player;
+import dungeonmania.entities.collectables.Collectable;
 import dungeonmania.entities.inventory.InventoryItem;
 import dungeonmania.map.GameMap;
 import dungeonmania.util.Position;
 
-public abstract class Potion extends Entity implements InventoryItem, BattleItem {
+public abstract class Potion extends Entity implements InventoryItem, BattleItem, Collectable {
     private int duration;
 
     public Potion(Position position, int duration) {
@@ -25,8 +26,13 @@ public abstract class Potion extends Entity implements InventoryItem, BattleItem
     @Override
     public void onOverlap(GameMap map, Entity entity) {
         if (entity instanceof Player) {
-            if (!((Player) entity).pickUp(this))
-                return;
+            onPlayerCollect(map, (Player) entity);
+        }
+    }
+
+    @Override
+    public void onPlayerCollect(GameMap map, Player player) {
+        if (player.pickUp(this)) {
             map.destroyEntity(this);
         }
     }

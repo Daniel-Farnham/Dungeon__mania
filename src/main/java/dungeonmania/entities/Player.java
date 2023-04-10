@@ -14,6 +14,7 @@ import dungeonmania.entities.enemies.Enemy;
 import dungeonmania.entities.enemies.Mercenary;
 import dungeonmania.entities.inventory.Inventory;
 import dungeonmania.entities.inventory.InventoryItem;
+import dungeonmania.entities.collectables.Collectable;
 import dungeonmania.entities.playerState.PlayerState;
 import dungeonmania.map.GameMap;
 import dungeonmania.util.Direction;
@@ -174,5 +175,11 @@ public class Player extends Entity implements Battleable {
             return BattleStatistics.applyBuff(origin, new BattleStatistics(0, 0, 0, 1, 1, false, false));
         }
         return origin;
+    }
+
+    public void interactWithCollectable(GameMap map, Entity collectable) {
+        if (collectable instanceof Collectable) {
+            ((Collectable) collectable).onPlayerCollect(map, this);
+        }
     }
 }

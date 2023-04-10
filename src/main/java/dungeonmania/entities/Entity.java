@@ -47,12 +47,14 @@ public abstract class Entity {
         this.position = Position.translateBy(this.position, offset);
     }
 
-    public void onOverlap(GameMap map, Entity entity) {
+    public void onMovedAway(GameMap map, Entity entity) {
 
     }
 
-    public void onMovedAway(GameMap map, Entity entity) {
-
+    public void onOverlap(GameMap map, Entity entity) {
+        if (entity instanceof Player) {
+            ((Player) entity).interactWithCollectable(map, this);
+        }
     }
 
     public void onDestroy(GameMap gameMap) {

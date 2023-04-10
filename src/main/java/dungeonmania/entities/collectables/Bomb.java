@@ -12,7 +12,7 @@ import dungeonmania.entities.Switch;
 import dungeonmania.entities.inventory.InventoryItem;
 import dungeonmania.map.GameMap;
 
-public class Bomb extends Entity implements InventoryItem {
+public class Bomb extends Entity implements InventoryItem, Collectable {
     public enum State {
         SPAWNED, INVENTORY, PLACED
     }
@@ -47,12 +47,17 @@ public class Bomb extends Entity implements InventoryItem {
         if (state != State.SPAWNED)
             return;
         if (entity instanceof Player) {
-            if (!((Player) entity).pickUp(this))
-                return;
+            onPlayerCollect(map, (Player) entity);
+        }
+    }
+
+    @Override
+    public void onPlayerCollect(GameMap map, Player player) {
+        if (player.pickUp(this)) {
             subs.stream().forEach(s -> s.unsubscribe(this));
             map.destroyEntity(this);
+            this.state = State.INVENTORY;
         }
-        this.state = State.INVENTORY;
     }
 
     public void onPutDown(GameMap map, Position p) {
