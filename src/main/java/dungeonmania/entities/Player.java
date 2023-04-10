@@ -155,6 +155,14 @@ public class Player extends Entity implements Battleable {
         return battleStatistics;
     }
 
+    public Double getPlayerHealth() {
+        return battleStatistics.getHealth();
+    }
+
+    public void setPlayerHealth(Double health) {
+        battleStatistics.setHealth(health);
+    }
+
     public <T extends InventoryItem> int countEntityOfType(Class<T> itemType) {
         return inventory.count(itemType);
     }
