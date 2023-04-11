@@ -45,16 +45,6 @@ public class Sword extends Entity implements InventoryItem, BattleItem, Collecta
     }
 
     @Override
-    public void onMovedAway(GameMap map, Entity entity) {
-        return;
-    }
-
-    @Override
-    public void onDestroy(GameMap gameMap) {
-        return;
-    }
-
-    @Override
     public void use(Game game) {
         durability--;
         if (durability <= 0) {

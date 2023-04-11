@@ -27,23 +27,20 @@ public abstract class Enemy extends Entity implements Battleable {
         return battleStatistics;
     }
 
+    public Double getEnemyHealth() {
+        return battleStatistics.getHealth();
+    }
+
+    public void setEnemyHealth(Double health) {
+        battleStatistics.setHealth(health);
+    }
+
     @Override
     public void onOverlap(GameMap map, Entity entity) {
         if (entity instanceof Player) {
             Player player = (Player) entity;
             map.getGame().battle(player, this);
         }
-    }
-
-    @Override
-    public void onDestroy(GameMap map) {
-        Game g = map.getGame();
-        g.unsubscribe(getId());
-    }
-
-    @Override
-    public void onMovedAway(GameMap map, Entity entity) {
-        return;
     }
 
     public abstract void move(Game game);

@@ -1,9 +1,9 @@
 package dungeonmania.entities;
 
+import dungeonmania.Game;
 import dungeonmania.map.GameMap;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
-
 
 import java.util.UUID;
 
@@ -47,6 +47,9 @@ public abstract class Entity {
         this.position = Position.translateBy(this.position, offset);
     }
 
+    public void onMovedAway(GameMap map, Entity entity) {
+
+    }
 
     public void onOverlap(GameMap map, Entity entity) {
         if (entity instanceof Player) {
@@ -54,9 +57,10 @@ public abstract class Entity {
         }
     }
 
-    public abstract void onMovedAway(GameMap map, Entity entity);
-
-    public abstract void onDestroy(GameMap gameMap);
+    public void onDestroy(GameMap gameMap) {
+        Game g = gameMap.getGame();
+        g.unsubscribe(getId());
+    }
 
     public Position getPosition() {
         return position;

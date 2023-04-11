@@ -1,16 +1,22 @@
 package dungeonmania.entities.playerState;
 
 import dungeonmania.entities.Player;
+import org.json.JSONObject;
 
-public abstract class PlayerState {
+public class PlayerState {
     private Player player;
     private boolean isInvincible = false;
     private boolean isInvisible = false;
 
-    PlayerState(Player player, boolean isInvincible, boolean isInvisible) {
+    public PlayerState(Player player) {
         this.player = player;
-        this.isInvincible = isInvincible;
-        this.isInvisible = isInvisible;
+    }
+
+    public JSONObject toJsonObject() {
+        JSONObject ret = new JSONObject();
+        ret.put("invisible", isInvisible);
+        ret.put("invincible", isInvincible);
+        return ret;
     }
 
     public boolean isInvincible() {
@@ -21,13 +27,16 @@ public abstract class PlayerState {
         return isInvisible;
     };
 
-    public Player getPlayer() {
-        return player;
+    public void transitionInvisible() {
+        this.isInvisible = true;
     }
 
-    public abstract void transitionInvisible();
+    public void transitionInvincible() {
+        this.isInvincible = true;
+    }
 
-    public abstract void transitionInvincible();
-
-    public abstract void transitionBase();
+    public void transitionBase() {
+        this.isInvisible = false;
+        this.isInvincible = false;
+    }
 }

@@ -15,7 +15,6 @@ import dungeonmania.entities.enemies.Mercenary;
 import dungeonmania.entities.inventory.Inventory;
 import dungeonmania.entities.inventory.InventoryItem;
 import dungeonmania.entities.collectables.Collectable;
-import dungeonmania.entities.playerState.BaseState;
 import dungeonmania.entities.playerState.PlayerState;
 import dungeonmania.map.GameMap;
 import dungeonmania.util.Direction;
@@ -36,14 +35,10 @@ public class Player extends Entity implements Battleable {
 
     public Player(Position position, double health, double attack) {
         super(position);
-        battleStatistics = new BattleStatistics(
-                health,
-                attack,
-                0,
-                BattleStatistics.DEFAULT_DAMAGE_MAGNIFIER,
+        battleStatistics = new BattleStatistics(health, attack, 0, BattleStatistics.DEFAULT_DAMAGE_MAGNIFIER,
                 BattleStatistics.DEFAULT_PLAYER_DAMAGE_REDUCER);
         inventory = new Inventory();
-        state = new BaseState(this);
+        state = new PlayerState(this);
     }
 
     public int getCollectedTreasureCount() {
@@ -64,7 +59,8 @@ public class Player extends Entity implements Battleable {
 
     public boolean build(String entity, EntityFactory factory) {
         InventoryItem item = inventory.checkBuildCriteria(this, true, entity.equals("shield"), factory);
-        if (item == null) return false;
+        if (item == null)
+            return false;
         return inventory.add(item);
     }
 
@@ -77,7 +73,8 @@ public class Player extends Entity implements Battleable {
     public void onOverlap(GameMap map, Entity entity) {
         if (entity instanceof Enemy) {
             if (entity instanceof Mercenary) {
-                if (((Mercenary) entity).isAllied()) return;
+                if (((Mercenary) entity).isAllied())
+                    return;
             }
             map.getGame().battle(this, (Enemy) entity);
         }
@@ -93,7 +90,8 @@ public class Player extends Entity implements Battleable {
     }
 
     public boolean pickUp(Entity item) {
-        if (item instanceof Treasure) collectedTreasureCount++;
+        if (item instanceof Treasure)
+            collectedTreasureCount++;
         return inventory.add((InventoryItem) item);
     }
 
@@ -107,7 +105,8 @@ public class Player extends Entity implements Battleable {
 
     public <T extends InventoryItem> void use(Class<T> itemType) {
         T item = inventory.getFirst(itemType);
-        if (item != null) inventory.remove(item);
+        if (item != null)
+            inventory.remove(item);
     }
 
     public void use(Bomb bomb, GameMap map) {
@@ -157,41 +156,25 @@ public class Player extends Entity implements Battleable {
         return battleStatistics;
     }
 
+    public Double getPlayerHealth() {
+        return battleStatistics.getHealth();
+    }
+
+    public void setPlayerHealth(Double health) {
+        battleStatistics.setHealth(health);
+    }
+
     public <T extends InventoryItem> int countEntityOfType(Class<T> itemType) {
         return inventory.count(itemType);
     }
 
     public BattleStatistics applyBuff(BattleStatistics origin) {
         if (state.isInvincible()) {
-            return BattleStatistics.applyBuff(origin, new BattleStatistics(
-                0,
-                0,
-                0,
-                1,
-                1,
-                true,
-                true));
+            return BattleStatistics.applyBuff(origin, new BattleStatistics(0, 0, 0, 1, 1, true, true));
         } else if (state.isInvisible()) {
-            return BattleStatistics.applyBuff(origin, new BattleStatistics(
-                0,
-                0,
-                0,
-                1,
-                1,
-                false,
-                false));
+            return BattleStatistics.applyBuff(origin, new BattleStatistics(0, 0, 0, 1, 1, false, false));
         }
         return origin;
-    }
-
-    @Override
-    public void onMovedAway(GameMap map, Entity entity) {
-        return;
-    }
-
-    @Override
-    public void onDestroy(GameMap gameMap) {
-        return;
     }
 
     public void interactWithCollectable(GameMap map, Entity collectable) {

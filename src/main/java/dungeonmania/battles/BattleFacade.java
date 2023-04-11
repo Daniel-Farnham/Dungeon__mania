@@ -21,10 +21,9 @@ public class BattleFacade {
 
     public void battle(Game game, Player player, Enemy enemy) {
         // 0. init
-        double initialPlayerHealth = player.getBattleStatistics().getHealth();
-        double initialEnemyHealth = enemy.getBattleStatistics().getHealth();
+        double initialPlayerHealth = player.getPlayerHealth();
+        double initialEnemyHealth = enemy.getEnemyHealth();
         String enemyString = NameConverter.toSnakeCase(enemy);
-
 
         // 1. apply buff provided by the game and player's inventory
         // getting buffing amount
@@ -36,7 +35,8 @@ public class BattleFacade {
             playerBuff = player.applyBuff(playerBuff);
         } else {
             for (BattleItem item : player.getInventory().getEntities(BattleItem.class)) {
-                if (item instanceof Potion) continue;
+                if (item instanceof Potion)
+                    continue;
                 playerBuff = item.applyBuff(playerBuff);
                 battleItems.add(item);
             }
@@ -44,7 +44,8 @@ public class BattleFacade {
 
         List<Mercenary> mercs = game.getMap().getEntities(Mercenary.class);
         for (Mercenary merc : mercs) {
-            if (!merc.isAllied()) continue;
+            if (!merc.isAllied())
+                continue;
             playerBuff = BattleStatistics.applyBuff(playerBuff, merc.getBattleStatistics());
         }
 
@@ -58,8 +59,8 @@ public class BattleFacade {
         List<BattleRound> rounds = BattleStatistics.battle(playerBattleStatistics, enemyBattleStatistics);
 
         // 3. update health to the actual statistics
-        player.getBattleStatistics().setHealth(playerBattleStatistics.getHealth());
-        enemy.getBattleStatistics().setHealth(enemyBattleStatistics.getHealth());
+        player.setPlayerHealth(playerBattleStatistics.getHealth());
+        enemy.setEnemyHealth(enemyBattleStatistics.getHealth());
 
         // 4. call to decrease durability of items
         for (BattleItem item : battleItems) {
@@ -68,17 +69,11 @@ public class BattleFacade {
         }
 
         // 5. Log the battle - solidate it to be a battle response
-        battleResponses.add(new BattleResponse(
-                enemyString,
-                rounds.stream()
-                    .map(ResponseBuilder::getRoundResponse)
-                    .collect(Collectors.toList()),
-                battleItems.stream()
-                        .map(Entity.class::cast)
-                        .map(ResponseBuilder::getItemResponse)
+        battleResponses.add(new BattleResponse(enemyString,
+                rounds.stream().map(ResponseBuilder::getRoundResponse).collect(Collectors.toList()),
+                battleItems.stream().map(Entity.class::cast).map(ResponseBuilder::getItemResponse)
                         .collect(Collectors.toList()),
-                initialPlayerHealth,
-                initialEnemyHealth));
+                initialPlayerHealth, initialEnemyHealth));
     }
 
     public List<BattleResponse> getBattleResponses() {
