@@ -9,7 +9,7 @@ import dungeonmania.battles.BattleStatistics;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.Interactable;
 import dungeonmania.entities.Player;
-// import dungeonmania.entities.buildables.Sceptre;
+import dungeonmania.entities.buildables.Sceptre;
 import dungeonmania.entities.collectables.Treasure;
 import dungeonmania.entities.collectables.potions.InvincibilityPotion;
 import dungeonmania.entities.collectables.potions.InvisibilityPotion;
@@ -29,6 +29,7 @@ public class Mercenary extends Enemy implements Interactable {
     private double allyAttack;
     private double allyDefence;
     private boolean allied = false;
+    private boolean mindControlled = false;
     private int ticksAllied = 0;
     private boolean isAdjacentToPlayer = false;
 
@@ -75,11 +76,12 @@ public class Mercenary extends Enemy implements Interactable {
     @Override
     public void interact(Player player, Game game) {
         allied = true;
-        // if (player.hasSceptre() && !allied) {
-        //     Sceptre sceptre = player.getInventory().getFirst(Sceptre.class);
-        //     this.ticksAllied = sceptre.getDuration();
-        //     return;
-        // }
+        if (player.hasSceptre() && !allied) {
+            Sceptre sceptre = player.getInventory().getFirst(Sceptre.class);
+            this.ticksAllied = sceptre.getDuration();
+            this.mindControlled = true;
+            return;
+        }
         bribe(player);
         if (!isAdjacentToPlayer && Position.isAdjacent(player.getPosition(), getPosition()))
             isAdjacentToPlayer = true;
@@ -96,9 +98,12 @@ public class Mercenary extends Enemy implements Interactable {
         GameMap map = game.getMap();
         Player player = game.getPlayer();
         if (allied) {
-            ticksAllied--;
-            if (ticksAllied <= 0) {
-                allied = false;
+            if (mindControlled) {
+                ticksAllied--;
+                if (ticksAllied <= 0) {
+                    allied = false;
+                    mindControlled = false;
+                }
             }
             nextPos = isAdjacentToPlayer ? player.getPreviousDistinctPosition()
                     : map.dijkstraPathFind(getPosition(), player.getPosition(), this);
