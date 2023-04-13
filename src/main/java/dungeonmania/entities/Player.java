@@ -143,11 +143,6 @@ public class Player extends Entity implements Battleable {
         }
     }
 
-    public void use(Sceptre sceptre, int tick) {
-        inventory.remove(sceptre);
-        // ADD FUNCTIONALITY HERE
-    }
-
     public void onTick(int tick) {
         if (inEffective == null || tick == nextTrigger) {
             triggerNext(tick);
@@ -188,5 +183,9 @@ public class Player extends Entity implements Battleable {
         if (collectable instanceof Collectable) {
             ((Collectable) collectable).onPlayerCollect(map, this);
         }
+    }
+
+    public boolean hasSceptre() {
+        return inventory.getFirst(Sceptre.class) != null;
     }
 }

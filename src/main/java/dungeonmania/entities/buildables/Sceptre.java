@@ -16,7 +16,7 @@ public class Sceptre extends Buildable {
         return origin;
     }
 
-    public int duration() {
+    public int getDuration() {
         return duration;
     }
 
