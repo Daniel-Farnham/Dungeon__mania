@@ -11,6 +11,8 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+// This includes tests on Sceptre and Midnight Armour. 
+
 public class SunStoneTest {
     @Test
     @Tag("SS-1")
@@ -148,7 +150,7 @@ public class SunStoneTest {
     }
 
     @Test
-    @Tag("S-1")
+    @Tag("SS-7")
     @DisplayName("Test the effects of the Sceptre controlling a Mercenary")
     public void sceptreControlDuration() throws InvalidActionException {
         // Set up the dungeon and player position with a sceptre and mercenary
@@ -180,9 +182,66 @@ public class SunStoneTest {
         res = assertDoesNotThrow(() -> dmc.interact(mercId));
 
         // Test if the mercenary is under control
-        // Assuming you have a way to check if a mercenary is under control, like isControlled() method
         res = dmc.tick(Direction.RIGHT);
         assertEquals(0, res.getBattles().size());
     }
 
+    @Test
+    @Tag("SS-8")
+    @DisplayName("Test building a Midnight Armour with Sword and SunStone no zombies")
+        public void buildMidnightArmourWithSwordAndSunStone() {
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_BuildablesTest_BuildMidnightArmour",
+                "c_BuildablesTest_BuildMidnightArmour");
+        assertEquals(0, TestUtils.getInventory(res, "sword").size());
+        assertEquals(0, TestUtils.getInventory(res, "sun_stone").size());
+
+        // Pick up Sword
+        res = dmc.tick(Direction.RIGHT);
+        assertEquals(1, TestUtils.getInventory(res, "sword").size());
+
+        // Pick up SunStone
+        res = dmc.tick(Direction.RIGHT);
+        assertEquals(1, TestUtils.getInventory(res, "sun_stone").size());
+
+        // Build Midnight Armour
+        assertEquals(0, TestUtils.getInventory(res, "midnight_armour").size());
+        res = assertDoesNotThrow(() -> dmc.build("midnight_armour"));
+        assertEquals(1, TestUtils.getInventory(res, "midnight_armour").size());
+
+        // Materials used in construction disappear from inventory
+        assertEquals(0, TestUtils.getInventory(res, "sword").size());
+        assertEquals(0, TestUtils.getInventory(res, "sun_stone").size());
+    }
+
+    @Test
+    @Tag("SS-9")
+    @DisplayName("Test Midnight Armour cannot be built when ZombieToast entities are present")
+        public void buildMidnightArmourZombiesPresent() throws InvalidActionException {
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_BuildablesTest_BuildMidnightArmourZombiesPresent",
+                "c_BuildablesTest_BuildMidnightArmourZombiesPresent");
+        assertEquals(0, TestUtils.getInventory(res, "sword").size());
+        assertEquals(0, TestUtils.getInventory(res, "sun_stone").size());
+
+        // Pick up Sword
+        res = dmc.tick(Direction.RIGHT);
+        assertEquals(1, TestUtils.getInventory(res, "sword").size());
+
+        // Pick up SunStone
+        res = dmc.tick(Direction.RIGHT);
+        assertEquals(1, TestUtils.getInventory(res, "sun_stone").size());
+
+        // Confirm ZombieToast presence
+        assertEquals(1, TestUtils.getEntities(res, "zombie_toast").size());
+
+        // Attempt to build Midnight Armour
+        assertEquals(0, TestUtils.getInventory(res, "midnight_armour").size());
+        assertThrows(InvalidActionException.class, () -> dmc.build("midnight_armour"));
+        assertEquals(0, TestUtils.getInventory(res, "midnight_armour").size());
+
+        // Materials should not be used in failed construction attempt
+        assertEquals(1, TestUtils.getInventory(res, "sword").size());
+        assertEquals(1, TestUtils.getInventory(res, "sun_stone").size());
+    }
 }

@@ -5,6 +5,7 @@ import dungeonmania.entities.buildables.BuildableFactory;
 import dungeonmania.entities.buildables.Bow;
 import dungeonmania.entities.buildables.Shield;
 import dungeonmania.entities.buildables.Sceptre;
+import dungeonmania.entities.buildables.MidnightArmour;
 import dungeonmania.entities.collectables.*;
 import dungeonmania.entities.enemies.*;
 import dungeonmania.map.GameMap;
@@ -140,6 +141,16 @@ public class EntityFactory {
         properties.put("mindControlDuration", mindControlDuration);
         return (Sceptre) buildableFactory.createBuildable("Sceptre", null, properties);
     }
+
+    public MidnightArmour buildMidnightArmour() {
+        double attackBonus = config.optDouble("midnight_armour_attack");
+        double defenseBonus = config.optDouble("midnight_armour_defence");
+        Map<String, Object> properties = new HashMap<>();
+        properties.put("attack", attackBonus);
+        properties.put("defence", defenseBonus);
+        return (MidnightArmour) buildableFactory.createBuildable("MidnightArmour", null, properties);
+    }
+    
 
     private Entity constructEntity(JSONObject jsonEntity, JSONObject config) {
         Position pos = new Position(jsonEntity.getInt("x"), jsonEntity.getInt("y"));

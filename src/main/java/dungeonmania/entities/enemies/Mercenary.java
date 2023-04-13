@@ -40,7 +40,6 @@ public class Mercenary extends Enemy implements Interactable {
         this.bribeRadius = bribeRadius;
         this.allyAttack = allyAttack;
         this.allyDefence = allyDefence;
-        System.out.println(position);
     }
 
     public boolean isAllied() {
