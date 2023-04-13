@@ -4,8 +4,9 @@ import dungeonmania.Game;
 import dungeonmania.entities.buildables.BuildableFactory;
 import dungeonmania.entities.buildables.Bow;
 import dungeonmania.entities.buildables.Shield;
+import dungeonmania.entities.buildables.Sceptre;
+import dungeonmania.entities.buildables.MidnightArmour;
 import dungeonmania.entities.collectables.*;
-import dungeonmania.entities.collectables.Sword;
 import dungeonmania.entities.enemies.*;
 import dungeonmania.map.GameMap;
 import dungeonmania.entities.collectables.potions.InvincibilityPotion;
@@ -132,6 +133,24 @@ public class EntityFactory {
         return (Shield) buildableFactory.createBuildable("Shield", null, properties);
     }
 
+    public Sceptre buildSceptre() {
+        int sceptreDurability = config.optInt("sceptre_durability");
+        int mindControlDuration = config.optInt("mind_control_duration");
+        Map<String, Object> properties = new HashMap<>();
+        properties.put("durability", sceptreDurability);
+        properties.put("mindControlDuration", mindControlDuration);
+        return (Sceptre) buildableFactory.createBuildable("Sceptre", null, properties);
+    }
+
+    public MidnightArmour buildMidnightArmour() {
+        double attackBonus = config.optDouble("midnight_armour_attack");
+        double defenseBonus = config.optDouble("midnight_armour_defence");
+        Map<String, Object> properties = new HashMap<>();
+        properties.put("attack", attackBonus);
+        properties.put("defence", defenseBonus);
+        return (MidnightArmour) buildableFactory.createBuildable("MidnightArmour", null, properties);
+    }
+
     private Entity constructEntity(JSONObject jsonEntity, JSONObject config) {
         Position pos = new Position(jsonEntity.getInt("x"), jsonEntity.getInt("y"));
 
@@ -158,6 +177,8 @@ public class EntityFactory {
             return new Wood(pos);
         case "arrow":
             return new Arrow(pos);
+        case "sun_stone":
+            return new SunStone(pos);
         case "bomb":
             int bombRadius = config.optInt("bomb_radius", Bomb.DEFAULT_RADIUS);
             return new Bomb(pos, bombRadius);
