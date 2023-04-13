@@ -8,8 +8,10 @@ import dungeonmania.battles.BattleStatistics;
 import dungeonmania.battles.Battleable;
 import dungeonmania.entities.collectables.Bomb;
 import dungeonmania.entities.collectables.Treasure;
+import dungeonmania.entities.collectables.SunStone;
 import dungeonmania.entities.collectables.potions.InvincibilityPotion;
 import dungeonmania.entities.collectables.potions.Potion;
+import dungeonmania.entities.buildables.Sceptre;
 import dungeonmania.entities.enemies.Enemy;
 import dungeonmania.entities.enemies.Mercenary;
 import dungeonmania.entities.inventory.Inventory;
@@ -96,7 +98,7 @@ public class Player extends Entity implements Battleable {
     }
 
     public boolean pickUp(Entity item) {
-        if (item instanceof Treasure)
+        if (item instanceof Treasure || item instanceof SunStone) // or an instance of sunStone
             collectedTreasureCount++;
         return inventory.add((InventoryItem) item);
     }
@@ -187,5 +189,9 @@ public class Player extends Entity implements Battleable {
         if (collectable instanceof Collectable) {
             ((Collectable) collectable).onPlayerCollect(map, this);
         }
+    }
+
+    public boolean hasSceptre() {
+        return inventory.getFirst(Sceptre.class) != null;
     }
 }

@@ -9,6 +9,7 @@ import dungeonmania.battles.BattleStatistics;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.Interactable;
 import dungeonmania.entities.Player;
+import dungeonmania.entities.buildables.Sceptre; 
 import dungeonmania.entities.collectables.Treasure;
 import dungeonmania.entities.collectables.potions.InvincibilityPotion;
 import dungeonmania.entities.collectables.potions.InvisibilityPotion;
@@ -28,6 +29,7 @@ public class Mercenary extends Enemy implements Interactable {
     private double allyAttack;
     private double allyDefence;
     private boolean allied = false;
+    private int ticksAllied = 0; 
     private boolean isAdjacentToPlayer = false;
 
     public Mercenary(Position position, double health, double attack, int bribeAmount, int bribeRadius,
@@ -37,10 +39,16 @@ public class Mercenary extends Enemy implements Interactable {
         this.bribeRadius = bribeRadius;
         this.allyAttack = allyAttack;
         this.allyDefence = allyDefence;
+        System.out.println(position); 
     }
-
+    
     public boolean isAllied() {
         return allied;
+    }
+
+    public void setAlliedForTicks(int duration) {
+        this.allied = true;
+        this.ticksAllied = duration;
     }
 
     @Override
@@ -77,6 +85,16 @@ public class Mercenary extends Enemy implements Interactable {
             isAdjacentToPlayer = true;
     }
 
+    public void interactUsingSceptre(Player player, Game game, int tick) {
+        if (player.hasSceptre() && !allied) {
+            Sceptre sceptre = player.getInventory().getFirst(Sceptre.class);
+            setAlliedForTicks(sceptre.getDuration());
+        } 
+        if (!isAdjacentToPlayer && Position.isAdjacent(player.getPosition(), getPosition()))
+        isAdjacentToPlayer = true;
+
+    }
+
     @Override
     public void move(Game game) {
         int swampCounter = this.getSwampCounter();
@@ -88,6 +106,10 @@ public class Mercenary extends Enemy implements Interactable {
         GameMap map = game.getMap();
         Player player = game.getPlayer();
         if (allied) {
+            ticksAllied--;
+            if (ticksAllied <= 0) {
+                allied = false;
+            }
             nextPos = isAdjacentToPlayer ? player.getPreviousDistinctPosition()
                     : map.dijkstraPathFind(getPosition(), player.getPosition(), this);
             if (!isAdjacentToPlayer && Position.isAdjacent(player.getPosition(), nextPos))
