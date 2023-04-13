@@ -18,6 +18,7 @@ public abstract class Entity {
     private Position previousDistinctPosition;
     private Direction facing;
     private String entityId;
+    private int swampCounter = 0;
 
     public Entity(Position position) {
         this.position = position;
@@ -92,5 +93,13 @@ public abstract class Entity {
 
     public Direction getFacing() {
         return this.facing;
+    }
+
+    public void setSwampCounter(int n) {
+        this.swampCounter = n;
+    }
+
+    public int getSwampCounter() {
+        return this.swampCounter;
     }
 }

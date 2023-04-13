@@ -21,6 +21,11 @@ public class ZombieToast extends Enemy {
 
     @Override
     public void move(Game game) {
+        int swampCounter = this.getSwampCounter();
+        if (swampCounter == 1 || swampCounter == 2) {
+            setSwampCounter(++swampCounter);
+            return;
+        }
         Position nextPos;
         GameMap map = game.getMap();
         if (map.getPlayer().getEffectivePotion() instanceof InvincibilityPotion) {

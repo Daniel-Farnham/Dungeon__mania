@@ -79,6 +79,11 @@ public class Mercenary extends Enemy implements Interactable {
 
     @Override
     public void move(Game game) {
+        int swampCounter = this.getSwampCounter();
+        if (swampCounter == 1 || swampCounter == 2) {
+            setSwampCounter(++swampCounter);
+            return;
+        }
         Position nextPos;
         GameMap map = game.getMap();
         Player player = game.getPlayer();
