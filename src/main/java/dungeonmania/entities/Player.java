@@ -61,7 +61,8 @@ public class Player extends Entity implements Battleable {
     }
 
     public boolean build(String entity, EntityFactory factory, GameMap map) {
-        InventoryItem item = inventory.checkBuildCriteria(this, true, entity.equals("shield"), factory, zombiesInDungeon(map));
+        InventoryItem item = inventory.checkBuildCriteria(this, true, entity.equals("shield"), factory,
+                zombiesInDungeon(map));
         if (item == null)
             return false;
         return inventory.add(item);
@@ -198,6 +199,6 @@ public class Player extends Entity implements Battleable {
 
     public boolean zombiesInDungeon(GameMap map) {
         List<ZombieToast> zombieToasts = map.getEntities(ZombieToast.class);
-        return !zombieToasts.isEmpty(); 
+        return !zombieToasts.isEmpty();
     }
 }

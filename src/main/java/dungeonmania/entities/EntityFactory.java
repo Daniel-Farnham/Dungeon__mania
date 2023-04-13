@@ -150,7 +150,6 @@ public class EntityFactory {
         properties.put("defence", defenseBonus);
         return (MidnightArmour) buildableFactory.createBuildable("MidnightArmour", null, properties);
     }
-    
 
     private Entity constructEntity(JSONObject jsonEntity, JSONObject config) {
         Position pos = new Position(jsonEntity.getInt("x"), jsonEntity.getInt("y"));

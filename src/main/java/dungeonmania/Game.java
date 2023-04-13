@@ -91,8 +91,7 @@ public class Game {
         List<String> buildables = player.getBuildables();
         if (!buildables.contains(buildable)) {
             throw new InvalidActionException(String.format("%s cannot be built", buildable));
-        }
-        else if (buildable.equals("midnight_armour") && player.zombiesInDungeon(map)) {
+        } else if (buildable.equals("midnight_armour") && player.zombiesInDungeon(map)) {
             throw new InvalidActionException(String.format("%s cannot be built", buildable));
         }
         registerOnce(() -> player.build(buildable, entityFactory, map), PLAYER_MOVEMENT, "playerBuildsItem");

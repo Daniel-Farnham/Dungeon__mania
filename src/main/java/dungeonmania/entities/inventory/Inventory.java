@@ -53,14 +53,15 @@ public class Inventory {
         return result;
     }
 
-    public InventoryItem checkBuildCriteria(Player p, boolean remove, boolean forceShield, EntityFactory factory, boolean zombiesInDungeon) {
+    public InventoryItem checkBuildCriteria(Player p, boolean remove, boolean forceShield, EntityFactory factory,
+            boolean zombiesInDungeon) {
 
         List<Wood> wood = getEntities(Wood.class);
         List<Arrow> arrows = getEntities(Arrow.class);
         List<Treasure> treasure = getEntities(Treasure.class);
         List<Key> keys = getEntities(Key.class);
         List<SunStone> sunstones = getEntities(SunStone.class);
-        List<Sword> swords = getEntities(Sword.class); 
+        List<Sword> swords = getEntities(Sword.class);
         if (wood.size() >= 1 && arrows.size() >= 3 && !forceShield) {
             if (remove) {
                 items.remove(wood.get(0));
