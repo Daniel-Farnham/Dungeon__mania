@@ -44,7 +44,7 @@ public class Inventory {
             result.add("shield");
         }
         if ((wood >= 1 || arrows >= 2) && (keys >= 1 || treasure >= 1) && sunstones >= 1) {
-            result.add("sceptre"); 
+            result.add("sceptre");
         }
         return result;
     }
@@ -73,13 +73,13 @@ public class Inventory {
                     items.remove(treasure.get(0));
                 } else if (keys.size() >= 1) {
                     items.remove(keys.get(0));
-                } else {
-                    // We are using a sunstone and we don't want to remove it from the inventory
                 }
+                // Else We are using a sunstone and we don't want to remove it from the inventory
             }
             return factory.buildShield();
-            
-        } else if ((wood.size() >= 1 || arrows.size() >= 2) && (keys.size() >= 1 || treasure.size() >= 1) && sunstones.size() >= 1) {
+
+        } else if ((wood.size() >= 1 || arrows.size() >= 2) && (keys.size() >= 1 || treasure.size() >= 1)
+                && sunstones.size() >= 1) {
             if (remove) {
                 if (wood.size() >= 1) {
                     items.remove(wood.get(0));
@@ -93,8 +93,8 @@ public class Inventory {
                     items.remove(treasure.get(0));
                 }
                 items.remove(sunstones.get(0));
-            } 
-            return factory.buildSceptre();       
+            }
+            return factory.buildSceptre();
         }
         return null;
     }

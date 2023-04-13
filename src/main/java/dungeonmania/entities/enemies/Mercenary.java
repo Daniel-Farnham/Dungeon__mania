@@ -9,7 +9,7 @@ import dungeonmania.battles.BattleStatistics;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.Interactable;
 import dungeonmania.entities.Player;
-import dungeonmania.entities.buildables.Sceptre; 
+// import dungeonmania.entities.buildables.Sceptre;
 import dungeonmania.entities.collectables.Treasure;
 import dungeonmania.entities.collectables.potions.InvincibilityPotion;
 import dungeonmania.entities.collectables.potions.InvisibilityPotion;
@@ -29,7 +29,7 @@ public class Mercenary extends Enemy implements Interactable {
     private double allyAttack;
     private double allyDefence;
     private boolean allied = false;
-    private int ticksAllied = 0; 
+    private int ticksAllied = 0;
     private boolean isAdjacentToPlayer = false;
 
     public Mercenary(Position position, double health, double attack, int bribeAmount, int bribeRadius,
@@ -39,16 +39,11 @@ public class Mercenary extends Enemy implements Interactable {
         this.bribeRadius = bribeRadius;
         this.allyAttack = allyAttack;
         this.allyDefence = allyDefence;
-        System.out.println(position); 
-    }
-    
-    public boolean isAllied() {
-        return allied;
+        System.out.println(position);
     }
 
-    public void setAlliedForTicks(int duration) {
-        this.allied = true;
-        this.ticksAllied = duration;
+    public boolean isAllied() {
+        return allied;
     }
 
     @Override
@@ -80,19 +75,14 @@ public class Mercenary extends Enemy implements Interactable {
     @Override
     public void interact(Player player, Game game) {
         allied = true;
+        // if (player.hasSceptre() && !allied) {
+        //     Sceptre sceptre = player.getInventory().getFirst(Sceptre.class);
+        //     this.ticksAllied = sceptre.getDuration();
+        //     return;
+        // }
         bribe(player);
         if (!isAdjacentToPlayer && Position.isAdjacent(player.getPosition(), getPosition()))
             isAdjacentToPlayer = true;
-    }
-
-    public void interactUsingSceptre(Player player, Game game, int tick) {
-        if (player.hasSceptre() && !allied) {
-            Sceptre sceptre = player.getInventory().getFirst(Sceptre.class);
-            setAlliedForTicks(sceptre.getDuration());
-        } 
-        if (!isAdjacentToPlayer && Position.isAdjacent(player.getPosition(), getPosition()))
-        isAdjacentToPlayer = true;
-
     }
 
     @Override
@@ -163,7 +153,7 @@ public class Mercenary extends Enemy implements Interactable {
 
     @Override
     public boolean isInteractable(Player player) {
-        return !allied && canBeBribed(player);
+        return ((!allied && canBeBribed(player)) || (player.hasSceptre() && !allied));
     }
 
     @Override

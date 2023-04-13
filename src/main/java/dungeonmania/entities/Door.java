@@ -43,7 +43,7 @@ public class Door extends Entity {
     private boolean hasKey(Player player) {
         Inventory inventory = player.getInventory();
         Key key = inventory.getFirst(Key.class);
-        //Can use sunstone. 
+        //Can use sunstone.
         SunStone sunstone = inventory.getFirst(SunStone.class);
 
         return (key != null && key.getnumber() == number) || sunstone != null;
