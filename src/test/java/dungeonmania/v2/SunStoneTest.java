@@ -1,7 +1,8 @@
-package dungeonmania.mvp;
+package dungeonmania.v2;
 
 import dungeonmania.DungeonManiaController;
 import dungeonmania.exceptions.InvalidActionException;
+import dungeonmania.mvp.TestUtils;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
