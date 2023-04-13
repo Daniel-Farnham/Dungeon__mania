@@ -65,6 +65,12 @@ public class Player extends Entity implements Battleable {
     }
 
     public void move(GameMap map, Direction direction) {
+        int swampCounter = this.getSwampCounter();
+        if (swampCounter == 1 || swampCounter == 2) {
+            setSwampCounter(++swampCounter);
+            return;
+        }
+        setSwampCounter(0);
         this.setFacing(direction);
         map.moveTo(this, Position.translateBy(this.getPosition(), direction));
     }
