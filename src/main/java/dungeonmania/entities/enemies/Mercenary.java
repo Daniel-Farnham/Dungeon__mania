@@ -28,6 +28,7 @@ public class Mercenary extends Enemy implements Interactable {
     private double allyAttack;
     private double allyDefence;
     private boolean allied = false;
+    private int ticksAllied = 0; 
     private boolean isAdjacentToPlayer = false;
 
     public Mercenary(Position position, double health, double attack, int bribeAmount, int bribeRadius,
@@ -37,10 +38,15 @@ public class Mercenary extends Enemy implements Interactable {
         this.bribeRadius = bribeRadius;
         this.allyAttack = allyAttack;
         this.allyDefence = allyDefence;
+        System.out.println(position); 
     }
-
+    
     public boolean isAllied() {
         return allied;
+    }
+
+    public void setAlliedForTicks(int ticks) {
+        this.ticksAllied = ticks;
     }
 
     @Override

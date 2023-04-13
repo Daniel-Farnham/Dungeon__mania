@@ -23,6 +23,7 @@ public class GraphNodeFactory {
         case "wood":
         case "arrow":
         case "bomb":
+        case "sun_stone":
         case "invisibility_potion":
         case "invincibility_potion":
         case "portal":
